@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'gnarl-package';
+  set = [
+    {key: 0, value: '4'},
+    {key: 1, value: '5'},
+    {key: 3, value: '6'},
+    {key: 4, value: '7'}
+  ]
 }

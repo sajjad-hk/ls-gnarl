@@ -125,6 +125,41 @@
           }
         }
       }
+    },
+    "gnarl": {
+      "root": "projects/gnarl",
+      "sourceRoot": "projects/gnarl/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/gnarl/tsconfig.lib.json",
+            "project": "projects/gnarl/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/gnarl/src/test.ts",
+            "tsConfig": "projects/gnarl/tsconfig.spec.json",
+            "karmaConfig": "projects/gnarl/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/gnarl/tsconfig.lib.json",
+              "projects/gnarl/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "gnarl-package"

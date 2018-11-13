@@ -1,0 +1,40 @@
+<svg #gnarl [attr.height]="width" [attr.width]="width">
+    <g [attr.transform]="transform()">
+        <circle #rail class="gnarl" #gnarl 
+            [attr.r]="gnarlRadius" 
+            [attr.stroke-width]="gnarlStrokeWidth" 
+            [attr.stroke]="gnarlColor"
+            fill="transparent" 
+            [attr.opacity]="opacity"/>
+        <g>
+            <circle #control 
+                [attr.r]="gnarlRadius * 7/10"
+                fill="transparent" />
+
+            <g [attr.transform]="minusPos()">
+                <circle #minus [attr.r]="controlsWidth" fill="" 
+                (click)="onMinus()"/>
+            </g>
+            
+                
+            <text [attr.contentEditable] = "true"
+                font-size="28"
+                text-anchor="middle" 
+                [attr.opacity]="opacity" >{{angle}}</text>
+            
+            <g [attr.transform]="plusPos()">
+                <circle #plus [attr.r]="controlsWidth" fill=""
+                (click)="onPlus()"/>
+            </g>
+            
+        </g>
+        <g #knob class="knob" 
+            [attr.fill]="" 
+            [attr.transform]="getTranslateFrom(knobPoint.x, knobPoint.y)">
+            <circle [attr.r]="((knobRadius - knobStrokeWidth) / 2)" 
+                [attr.fill]="knobColor"
+                [attr.stroke-width]="knobStrokeWidth"
+                [attr.stroke]="gnarlColor"/>
+        </g>
+    </g>
+</svg>
