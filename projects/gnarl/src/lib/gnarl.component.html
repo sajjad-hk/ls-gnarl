@@ -12,7 +12,8 @@
                 fill="transparent" />
 
             <g [attr.transform]="minusPos()">
-                <circle #minus [attr.r]="controlsWidth" fill="" 
+                <circle #minus [attr.r]="controlsWidth" fill=""
+                class="controls" 
                 (click)="onMinus()"/>
             </g>
             
@@ -24,15 +25,15 @@
             
             <g [attr.transform]="plusPos()">
                 <circle #plus [attr.r]="controlsWidth" fill=""
+                class="controls"
                 (click)="onPlus()"/>
             </g>
             
         </g>
         <g #knob class="knob" 
-            [attr.fill]="" 
-            [attr.transform]="getTranslateFrom(knobPoint.x, knobPoint.y)">
+            [attr.fill]="knobColor" 
+            [attr.transform]="getTranslate(knobPoint.x, knobPoint.y)">
             <circle [attr.r]="((knobRadius - knobStrokeWidth) / 2)" 
-                [attr.fill]="knobColor"
                 [attr.stroke-width]="knobStrokeWidth"
                 [attr.stroke]="gnarlColor"/>
         </g>

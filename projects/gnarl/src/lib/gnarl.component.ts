@@ -1,8 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
-import {
-    ICartesianCoordinate,
-    IPolarCoordinate
-} from "./models/coordinates";
+import { ICartesianCoordinate } from "./models/coordinates";
 import { GnarlService } from "./gnarl.service";
 import { fromEvent, merge } from 'rxjs';
 import { switchMap, takeUntil, throttleTime } from 'rxjs/operators';
@@ -16,7 +13,7 @@ export class GnarlComponent implements OnInit {
     @Input()
     gnarlRadius: number = 200;
     @Input()
-    gnarlColor: string = '171717';
+    gnarlColor: string = '#171717';
     @Input()
     gnarlStrokeWidth: number = 5;
     @Input()
@@ -24,17 +21,14 @@ export class GnarlComponent implements OnInit {
     @Input()
     knobRadius: number = 20;
     @Input()
-    knobColor: string = '808000';
+    knobColor: string = '#C0C0C0';
     @Input()
     knobStrokeWidth: number = 1;
 
     @Input()
-    initialAngle: number = 0;
-    @Input()
     set: Array<any>;
 
     knobPoint: ICartesianCoordinate;
-    knobPolar: IPolarCoordinate;
     angle = 0;
 
     @ViewChild('knob')
@@ -46,23 +40,15 @@ export class GnarlComponent implements OnInit {
     @ViewChild('control')
     control: ElementRef;
 
-    minusRect: any;
-    plusRect: any;
-    controlRect: any;
-
-    constructor(public gnarlService: GnarlService) {
+    constructor(private service: GnarlService) {
     }
 
     ngOnInit() {
-      console.log(this.set);
-      this.setObservables();
-      this.knobPoint = this.gnarlService.toScreenCartisian(
-        this.gnarlRadius,
-        this.initialAngle
-    );
-      this.gnarlService.onCalc.subscribe((angle) => this.angle = angle)
-      this.knobColor = '#' + this.knobColor
-      this.gnarlColor = '#' + this.gnarlColor
+      this.setObservables()
+      this.service.setRadius(this.gnarlRadius)
+      console.log(this.set)
+      this.knobPoint = this.service.transformingFromAngle(this.angle)
+      this.service.onTransforming.subscribe( (angle) => this.angle = angle )
     }
 
     get width() {
@@ -72,7 +58,7 @@ export class GnarlComponent implements OnInit {
     }
 
     get controlsWidth() {
-      return this.gnarlRadius * 2 / 10
+      return this.gnarlRadius * 2.2 / 10
     }
 
     get center(): ICartesianCoordinate {
@@ -87,30 +73,30 @@ export class GnarlComponent implements OnInit {
       };
     }
 
+    getTranslate(x, y): string {
+      return `translate(${x}, ${y})`
+    }
+
     transform() {
-        const transformParameter = this.gnarlStrokeWidth / 2 + this.gnarlRadius + this.knobRadius;
-        return `translate(${transformParameter}, ${transformParameter})`;
+        const transformParameter = this.gnarlStrokeWidth / 2 + this.gnarlRadius + this.knobRadius
+        return this.getTranslate(transformParameter, transformParameter)
     }
 
     plusPos() {
-      this.controlRect = this.control.nativeElement.getBoundingClientRect();
-      return `translate(${((this.controlRect.width - this.controlsWidth) / 2)}, ${0})`;
+      const controlRect = this.control.nativeElement.getBoundingClientRect()
+      return this.getTranslate((controlRect.width - this.controlsWidth) / 2, 0)
     }
 
     minusPos(): string {
-      this.controlRect = this.control.nativeElement.getBoundingClientRect();
-      return `translate(${- (this.controlRect.width - this.controlsWidth) / 2}, ${0})`;
-    }
-
-    getTranslateFrom(x, y): string {
-        return `translate(${x}, ${y})`;
+      const controlRect = this.control.nativeElement.getBoundingClientRect()
+      return this.getTranslate(- (controlRect.width - this.controlsWidth) / 2, 0)
     }
 
     onMinus() {
-      this.knobPoint = this.gnarlService.calcTransformangle(this.gnarlRadius, this.angle - 10)
+      this.knobPoint = this.service.transformingFromAngle(this.angle - 10)
     }
     onPlus() {
-      this.knobPoint = this.gnarlService.calcTransformangle(this.gnarlRadius, this.angle + 10)
+      this.knobPoint = this.service.transformingFromAngle(this.angle + 10)
     }
 
     /**
@@ -121,7 +107,7 @@ export class GnarlComponent implements OnInit {
         fromEvent(this.rail.nativeElement, "click"),
         fromEvent(this.rail.nativeElement, "touch")
       ).subscribe((event: MouseEvent | TouchEvent) => {
-        this.knobPoint = this.gnarlService.calcTransform(this.gnarlRadius, this.center, event as ICartesianCoordinate);
+        this.knobPoint = this.service.transformingFromEvent(this.center, event as ICartesianCoordinate);
       });
   
       const mouseMove$ = merge(
@@ -146,7 +132,7 @@ export class GnarlComponent implements OnInit {
           )
         )
         .subscribe((event: MouseEvent | TouchEvent) => {
-          this.knobPoint = this.gnarlService.calcTransform(this.gnarlRadius, this.center, event as ICartesianCoordinate);
+          this.knobPoint = this.service.transformingFromEvent(this.center, event as ICartesianCoordinate);
         });
     }
 }
