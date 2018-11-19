@@ -23,9 +23,9 @@ export class GnarlService {
   }
 
   findArcStep(angle: number) {
-    console.log(this.radianSteps.map( (s) => angle + 2 * Math.PI >=s))
+    console.log('find step',this.radianSteps.map( (s) => angle + 2 * Math.PI >=s))
     const index = _.findLastIndex( this.radianSteps.map( (s) => angle >=s), (x) => x === true)
-      return (index + 1)  > this.numberOfArcs ? 0 : index + 1
+      return (index + 1) >= this.numberOfArcs ? 0 : index + 1
   }
 
   setRadianSteps() {
@@ -43,6 +43,14 @@ export class GnarlService {
     return this.polarToCartisian(this.toRadians(angle))
   }
 
+  transformingByItemIndex(index: number) {
+    console.log('by index', index, this.radianSteps[index])
+    index = index >= this.numberOfArcs ? 0 : index < 0 ? this.numberOfArcs - 1 : index
+    this.onTransforming.emit(index)
+    const angle = this.radianSteps[index]
+    return this.polarToCartisian(angle)
+  }
+
   transformingFromEvent(center: ICartesianCoordinate, toPoint: ICartesianCoordinate) {
     let angle = this.toPolar(center, toPoint)
     angle = this.to2PiRadian(angle)
@@ -53,8 +61,11 @@ export class GnarlService {
 
   transformedFromEvent(center: ICartesianCoordinate, toPoint: ICartesianCoordinate) {
     let angle = this.toPolar(center, toPoint)
-    angle = this.radianSteps[this.findArcStep(angle)]
-    this.onTransforming.emit(this.findArcStep(angle))
+    angle = this.to2PiRadian(angle)
+    const angInd = this.findArcStep(angle)
+    angle = this.radianSteps[angInd]
+    console.log({angle, angInd})
+    // this.onTransforming.emit(angInd)
     return this.polarToCartisian(angle)
   }
 

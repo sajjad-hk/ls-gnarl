@@ -31,7 +31,9 @@ export class GnarlComponent implements OnInit {
 
     knobPoint: ICartesianCoordinate;
     steps: Array<number>
-    item: any = {key: 0, value: "4"}
+    item: any;
+    currentInd: number = 3;
+
     index: number = 0
     @ViewChild('knob')
     knob: ElementRef;
@@ -50,8 +52,13 @@ export class GnarlComponent implements OnInit {
       this.service.setRadius(this.gnarlRadius)
       this.service.setNumberOfAcrs(this.set.length)
       this.setRadianSteps()
-      this.knobPoint = this.service.transformingFromAngle(0)
-      this.service.onTransforming.subscribe( (i: number) => this.item = this.set[i-1] )
+      this.knobPoint = this.service.transformingByItemIndex(this.currentInd)
+      this.item = this.set[this.currentInd];
+      this.service.onTransforming.subscribe( (i: number) => {
+        this.item = this.set[i]
+        this.currentInd = i
+        console.log('On transforming', i, this.set[i])
+      })
     }
 
     get width() {
@@ -96,10 +103,12 @@ export class GnarlComponent implements OnInit {
     }
 
     onMinus() {
-      // this.knobPoint = this.service.transformingFromAngle(this.angle - 10)
+      console.log('on Minus',this.currentInd)
+      this.knobPoint = this.service.transformingByItemIndex(this.currentInd - 1)
     }
     onPlus() {
-      // this.knobPoint = this.service.transformingFromAngle(this.angle + 10)
+      console.log('on Plus',this.currentInd)
+      this.knobPoint = this.service.transformingByItemIndex(this.currentInd + 1)
     }
 
     setRadianSteps() {
