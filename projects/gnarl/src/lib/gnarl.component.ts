@@ -3,6 +3,7 @@ import { ICartesianCoordinate } from "./models/coordinates";
 import { GnarlService } from "./gnarl.service";
 import { fromEvent, merge } from 'rxjs';
 import { switchMap, takeUntil, throttleTime } from 'rxjs/operators';
+import * as _ from 'lodash';
 @Component({
     selector: "lib-gnarl",
     templateUrl: "./gnarl.component.html",
@@ -29,8 +30,9 @@ export class GnarlComponent implements OnInit {
     set: Array<any>;
 
     knobPoint: ICartesianCoordinate;
-    angle = 0;
-
+    steps: Array<number>
+    item: any = {key: 0, value: "4"}
+    index: number = 0
     @ViewChild('knob')
     knob: ElementRef;
     @ViewChild('gnarl')
@@ -46,9 +48,10 @@ export class GnarlComponent implements OnInit {
     ngOnInit() {
       this.setObservables()
       this.service.setRadius(this.gnarlRadius)
-      console.log(this.set)
-      this.knobPoint = this.service.transformingFromAngle(this.angle)
-      this.service.onTransforming.subscribe( (angle) => this.angle = angle )
+      this.service.setNumberOfAcrs(this.set.length)
+      this.setRadianSteps()
+      this.knobPoint = this.service.transformingFromAngle(0)
+      this.service.onTransforming.subscribe( (i: number) => this.item = this.set[i-1] )
     }
 
     get width() {
@@ -93,10 +96,16 @@ export class GnarlComponent implements OnInit {
     }
 
     onMinus() {
-      this.knobPoint = this.service.transformingFromAngle(this.angle - 10)
+      // this.knobPoint = this.service.transformingFromAngle(this.angle - 10)
     }
     onPlus() {
-      this.knobPoint = this.service.transformingFromAngle(this.angle + 10)
+      // this.knobPoint = this.service.transformingFromAngle(this.angle + 10)
+    }
+
+    setRadianSteps() {
+      const setSize = this.set.length
+      this.steps = Array.from(Array(setSize), (x, i) => i)
+      .map(x => (x * 2 * Math.PI) / setSize)
     }
 
     /**
@@ -107,7 +116,7 @@ export class GnarlComponent implements OnInit {
         fromEvent(this.rail.nativeElement, "click"),
         fromEvent(this.rail.nativeElement, "touch")
       ).subscribe((event: MouseEvent | TouchEvent) => {
-        this.knobPoint = this.service.transformingFromEvent(this.center, event as ICartesianCoordinate);
+        this.knobPoint = this.service.transformedFromEvent(this.center, event as ICartesianCoordinate)
       });
   
       const mouseMove$ = merge(
@@ -132,7 +141,10 @@ export class GnarlComponent implements OnInit {
           )
         )
         .subscribe((event: MouseEvent | TouchEvent) => {
-          this.knobPoint = this.service.transformingFromEvent(this.center, event as ICartesianCoordinate);
+          this.knobPoint = this.service.transformingFromEvent(this.center, event as ICartesianCoordinate)
         });
+        mouseUp$.subscribe( (event: MouseEvent | TouchEvent) => {
+          this.knobPoint = this.service.transformedFromEvent(this.center, event as ICartesianCoordinate)
+        })
     }
 }

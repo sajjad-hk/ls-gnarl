@@ -21,7 +21,7 @@
             <text [attr.contentEditable] = "true"
                 font-size="28"
                 text-anchor="middle" 
-                [attr.opacity]="opacity" >{{angle}}</text>
+                [attr.opacity]="opacity" >{{item?.value}}</text>
             
             <g [attr.transform]="plusPos()">
                 <circle #plus [attr.r]="controlsWidth" fill=""

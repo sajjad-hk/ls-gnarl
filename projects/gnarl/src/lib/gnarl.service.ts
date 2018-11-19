@@ -1,12 +1,14 @@
 import { Injectable, EventEmitter } from '@angular/core'
 import { ICartesianCoordinate } from './models/coordinates'
-
+import * as _ from 'lodash';
 @Injectable({
   providedIn: 'root'
 })
 export class GnarlService {
 
   radius: number
+  numberOfArcs: number
+  radianSteps: Array<number>
   onTransforming: EventEmitter<number> = new EventEmitter()
   constructor() { }
 
@@ -14,25 +16,56 @@ export class GnarlService {
     this.radius = radius
   }
 
+  setNumberOfAcrs(count: number) {
+    this.numberOfArcs = count
+    this.setRadianSteps()
+    console.log(this.radianSteps)
+  }
+
+  findArcStep(angle: number) {
+    console.log(this.radianSteps.map( (s) => angle + 2 * Math.PI >=s))
+    const index = _.findLastIndex( this.radianSteps.map( (s) => angle >=s), (x) => x === true)
+      return (index + 1)  > this.numberOfArcs ? 0 : index + 1
+  }
+
+  setRadianSteps() {
+    this.radianSteps = Array.from(Array(this.numberOfArcs), (x, i) => i)
+              .map(x => (x * 2 * Math.PI) / this.numberOfArcs)
+  }
+
   get transformingEmitter(): EventEmitter<number> {
     return this.onTransforming
   }
   
-  transformingFromAngle(angle) {
-    this.onTransforming.emit(this.to360(angle))
+  transformingFromAngle(angle: number) {
+    // this.onTransforming.emit(this.to360(angle))
+    // console.log()
     return this.polarToCartisian(this.toRadians(angle))
   }
 
-  transformingFromEvent(center, toPoint) {
-    const angle = this.toPolar(center, toPoint)
-    this.onTransforming.emit(Math.floor(this.toDegrees(angle)))
+  transformingFromEvent(center: ICartesianCoordinate, toPoint: ICartesianCoordinate) {
+    let angle = this.toPolar(center, toPoint)
+    angle = this.to2PiRadian(angle)
+    console.log({angle})
+    this.onTransforming.emit(this.findArcStep(angle))
     return this.polarToCartisian(angle)
   }
 
-  toPolar(center, point) {
+  transformedFromEvent(center: ICartesianCoordinate, toPoint: ICartesianCoordinate) {
+    let angle = this.toPolar(center, toPoint)
+    angle = this.radianSteps[this.findArcStep(angle)]
+    this.onTransforming.emit(this.findArcStep(angle))
+    return this.polarToCartisian(angle)
+  }
+
+  toPolar(center: ICartesianCoordinate, point: ICartesianCoordinate) {
     return (
       Math.atan2(point.y - center.y, point.x - center.x) + Math.PI / 2
     )
+  }
+
+  to2PiRadian(rad: number) {
+    return rad < 0 ? 2 * Math.PI + rad : rad
   }
 
   toDegrees(angle) {
