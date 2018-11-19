@@ -16,23 +16,6 @@ export class GnarlService {
     this.radius = radius
   }
 
-  setNumberOfAcrs(count: number) {
-    this.numberOfArcs = count
-    this.setRadianSteps()
-    console.log(this.radianSteps)
-  }
-
-  findArcStep(angle: number) {
-    console.log('find step',this.radianSteps.map( (s) => angle + 2 * Math.PI >=s))
-    const index = _.findLastIndex( this.radianSteps.map( (s) => angle >=s), (x) => x === true)
-      return (index + 1) >= this.numberOfArcs ? 0 : index + 1
-  }
-
-  setRadianSteps() {
-    this.radianSteps = Array.from(Array(this.numberOfArcs), (x, i) => i)
-              .map(x => (x * 2 * Math.PI) / this.numberOfArcs)
-  }
-
   get transformingEmitter(): EventEmitter<number> {
     return this.onTransforming
   }
@@ -40,7 +23,7 @@ export class GnarlService {
   transformingFromAngle(angle: number) {
     // this.onTransforming.emit(this.to360(angle))
     // console.log()
-    return this.polarToCartisian(this.toRadians(angle))
+    return this.toCartisian(this.toRadian(angle))
   }
 
   transformingByItemIndex(index: number) {
@@ -48,54 +31,107 @@ export class GnarlService {
     index = index >= this.numberOfArcs ? 0 : index < 0 ? this.numberOfArcs - 1 : index
     this.onTransforming.emit(index)
     const angle = this.radianSteps[index]
-    return this.polarToCartisian(angle)
-  }
-
-  transformingFromEvent(center: ICartesianCoordinate, toPoint: ICartesianCoordinate) {
-    let angle = this.toPolar(center, toPoint)
-    angle = this.to2PiRadian(angle)
-    console.log({angle})
-    this.onTransforming.emit(this.findArcStep(angle))
-    return this.polarToCartisian(angle)
+    return this.toCartisian(angle)
   }
 
   transformedFromEvent(center: ICartesianCoordinate, toPoint: ICartesianCoordinate) {
+    console.log('%c Start => transformedFromEvent function:', 'color: red; font-weight: bold;')
     let angle = this.toPolar(center, toPoint)
-    angle = this.to2PiRadian(angle)
-    const angInd = this.findArcStep(angle)
+    angle = this.wrapRadianTo2Pi(angle)
+    const angInd = this.findStep(angle)
     angle = this.radianSteps[angInd]
     console.log({angle, angInd})
     // this.onTransforming.emit(angInd)
-    return this.polarToCartisian(angle)
+    console.log('%c End => transformedFromEvent function:', 'color: red; font-weight: bold;')
+    console.log()
+    return this.toCartisian(angle)
   }
 
+  /**
+   * Setup devisions mapping to any countable set 
+   */
+  setNumberOfAcrs(count: number) {
+    this.numberOfArcs = count
+    this.setSteps()
+  }
+
+  setSteps() {
+    this.radianSteps = Array.from(Array(this.numberOfArcs), (x, i) => i)
+              .map(x => (x * 2 * Math.PI) / this.numberOfArcs)
+  }
+
+  findStep(radian: number) {
+    const index = _.findLastIndex( this.radianSteps.map( (s) => radian >=s), (x) => x === true )
+
+      return (index + 1) >= this.numberOfArcs ? 0 : index + 1
+  }
+
+
+  /**
+   * Continues transforming point on circle
+   * @param center center of circle
+   * @param point point on circle 
+   */
+  transformingFromEvent(center: ICartesianCoordinate, toPoint: ICartesianCoordinate) {
+    console.log('%c Start => transformingFromEvent function:', 'color: orange; font-weight: bold;')
+    let angle = this.toPolar(center, toPoint)
+    angle = this.wrapRadianTo2Pi(angle)
+    const index = this.findStep(angle)
+    this.onTransforming.emit(index)
+    console.log('%c End => transformingFromEvent function:', 'color: green; font-weight: bold;')
+    return this.toCartisian(angle)
+  }
+
+  
+  /**
+   * Transformers
+   */
   toPolar(center: ICartesianCoordinate, point: ICartesianCoordinate) {
-    return (
-      Math.atan2(point.y - center.y, point.x - center.x) + Math.PI / 2
-    )
+
+    return Math.atan2(point.y - center.y, point.x - center.x) + Math.PI / 2
   }
 
-  to2PiRadian(rad: number) {
-    return rad < 0 ? 2 * Math.PI + rad : rad
-  }
-
-  toDegrees(angle) {
-    const deg = angle * (180 / Math.PI)
-    return deg < 0 ? deg + 360 : deg
-  }
-
-  to360(deg) {
-    return deg < 0 ? deg + 360 : deg > 360 ? deg - 360 : deg
-  }
-
-  toRadians(angle) {
-    return angle * (Math.PI / 180)
-  }
-
-  polarToCartisian(angle: number): ICartesianCoordinate {
+  toCartisian(radian: number): ICartesianCoordinate {
     return {
-      x: this.radius * Math.cos(angle - Math.PI / 2),
-      y: this.radius * Math.sin(angle - Math.PI / 2)
+      x: this.radius * Math.cos(radian - Math.PI / 2),
+      y: this.radius * Math.sin(radian - Math.PI / 2)
     }
+  }
+
+  /**
+   * Convertors 
+   */
+  toDegree(radian: number): number {
+    const degree = this.wrapRadianTo2Pi(radian) * (180 / Math.PI) //degree Might not be in 0 - 360, test needed
+    return degree
+  }
+
+  toRadian(degree: number): number {
+    const radian = this.wrapDegreeTo360(degree) * (Math.PI / 180) //radian Might not be in 0 - 2 Pi, test needed
+    return radian
+  }
+
+
+  /**
+   * Angle wrappers
+   */
+  wrapDegreeTo360(degree: number): number {
+    if (degree < 0) {
+      degree += 360
+    }
+    if (degree > 360) {
+      degree -= 360
+    }
+    return degree
+  }
+
+  wrapRadianTo2Pi(radian: number): number {
+    if (radian < 0) {
+      radian += 2 * Math.PI
+    }
+    if (radian > 2 * Math.PI) {
+       radian -= 2 * Math.PI  
+    }
+    return radian
   }
 }

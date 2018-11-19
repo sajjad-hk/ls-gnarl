@@ -32,7 +32,7 @@ export class GnarlComponent implements OnInit {
     knobPoint: ICartesianCoordinate;
     steps: Array<number>
     item: any;
-    currentInd: number = 3;
+    currentInd: number = 0;
 
     index: number = 0
     @ViewChild('knob')
@@ -51,7 +51,6 @@ export class GnarlComponent implements OnInit {
       this.setObservables()
       this.service.setRadius(this.gnarlRadius)
       this.service.setNumberOfAcrs(this.set.length)
-      this.setRadianSteps()
       this.knobPoint = this.service.transformingByItemIndex(this.currentInd)
       this.item = this.set[this.currentInd];
       this.service.onTransforming.subscribe( (i: number) => {
@@ -83,7 +82,7 @@ export class GnarlComponent implements OnInit {
       };
     }
 
-    getTranslate(x, y): string {
+    getTranslate(x: number, y: number): string {
       return `translate(${x}, ${y})`
     }
 
@@ -111,22 +110,16 @@ export class GnarlComponent implements OnInit {
       this.knobPoint = this.service.transformingByItemIndex(this.currentInd + 1)
     }
 
-    setRadianSteps() {
-      const setSize = this.set.length
-      this.steps = Array.from(Array(setSize), (x, i) => i)
-      .map(x => (x * 2 * Math.PI) / setSize)
-    }
-
     /**
      *  The method to set handler for all type of user interaction events! (touch/click, drag mouse/screen) 
      */
     setObservables() {
-      merge(
-        fromEvent(this.rail.nativeElement, "click"),
-        fromEvent(this.rail.nativeElement, "touch")
-      ).subscribe((event: MouseEvent | TouchEvent) => {
-        this.knobPoint = this.service.transformedFromEvent(this.center, event as ICartesianCoordinate)
-      });
+      // merge(
+      //   fromEvent(this.rail.nativeElement, "click"),
+      //   fromEvent(this.rail.nativeElement, "touch")
+      // ).subscribe((event: MouseEvent | TouchEvent) => {
+      //   this.knobPoint = this.service.transformedFromEvent(this.center, event as ICartesianCoordinate)
+      // });
   
       const mouseMove$ = merge(
         fromEvent(document, "mousemove"),
