@@ -8,6 +8,7 @@ export class GnarlService {
 
   radius: number
   numberOfArcs: number
+  stepSize: number
   radianSteps: Array<number>
   onTransforming: EventEmitter<number> = new EventEmitter()
   constructor() { }
@@ -18,12 +19,6 @@ export class GnarlService {
 
   get transformingEmitter(): EventEmitter<number> {
     return this.onTransforming
-  }
-  
-  transformingFromAngle(angle: number) {
-    // this.onTransforming.emit(this.to360(angle))
-    // console.log()
-    return this.toCartisian(this.toRadian(angle))
   }
 
   transformingByItemIndex(index: number) {
@@ -38,12 +33,11 @@ export class GnarlService {
     console.log('%c Start => transformedFromEvent function:', 'color: red; font-weight: bold;')
     let angle = this.toPolar(center, toPoint)
     angle = this.wrapRadianTo2Pi(angle)
-    const angInd = this.findStep(angle)
-    angle = this.radianSteps[angInd]
-    console.log({angle, angInd})
-    // this.onTransforming.emit(angInd)
+    const index = this.findStep(angle)
+    angle = this.radianSteps[index]
+    this.onTransforming.emit(index)
+    console.log({angle, index})
     console.log('%c End => transformedFromEvent function:', 'color: red; font-weight: bold;')
-    console.log()
     return this.toCartisian(angle)
   }
 
@@ -58,12 +52,17 @@ export class GnarlService {
   setSteps() {
     this.radianSteps = Array.from(Array(this.numberOfArcs), (x, i) => i)
               .map(x => (x * 2 * Math.PI) / this.numberOfArcs)
+                    this.stepSize = this.radianSteps[1] - this.radianSteps[0]
   }
 
   findStep(radian: number) {
-    const index = _.findLastIndex( this.radianSteps.map( (s) => radian >=s), (x) => x === true )
+      const index = _.findLastIndex( this.radianSteps
+        .map( (center) => this.inInterval(radian, center) ), (x) => x === true )
+      return (index < 0 ? 0 : index)
+  }
 
-      return (index + 1) >= this.numberOfArcs ? 0 : index + 1
+  inInterval(radian: number, center: number) {
+      return radian >= center - this.stepSize / 2 && radian <= center + this.stepSize / 2
   }
 
 

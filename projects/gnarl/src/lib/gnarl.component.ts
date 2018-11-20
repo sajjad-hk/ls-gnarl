@@ -27,14 +27,13 @@ export class GnarlComponent implements OnInit {
     knobStrokeWidth: number = 1;
 
     @Input()
-    set: Array<any>;
+    set: Array<any>
 
     knobPoint: ICartesianCoordinate;
-    steps: Array<number>
     item: any;
-    currentInd: number = 0;
-
+    currentInd: number = 0
     index: number = 0
+
     @ViewChild('knob')
     knob: ElementRef;
     @ViewChild('gnarl')
@@ -56,7 +55,7 @@ export class GnarlComponent implements OnInit {
       this.service.onTransforming.subscribe( (i: number) => {
         this.item = this.set[i]
         this.currentInd = i
-        console.log('On transforming', i, this.set[i])
+        console.log('On transforming', i, this.currentInd, this.set[i])
       })
     }
 
@@ -114,12 +113,12 @@ export class GnarlComponent implements OnInit {
      *  The method to set handler for all type of user interaction events! (touch/click, drag mouse/screen) 
      */
     setObservables() {
-      // merge(
-      //   fromEvent(this.rail.nativeElement, "click"),
-      //   fromEvent(this.rail.nativeElement, "touch")
-      // ).subscribe((event: MouseEvent | TouchEvent) => {
-      //   this.knobPoint = this.service.transformedFromEvent(this.center, event as ICartesianCoordinate)
-      // });
+      merge(
+        fromEvent(this.rail.nativeElement, "click"),
+        fromEvent(this.rail.nativeElement, "touch")
+      ).subscribe((event: MouseEvent | TouchEvent) => {
+        this.knobPoint = this.service.transformedFromEvent(this.center, event as ICartesianCoordinate)
+      });
   
       const mouseMove$ = merge(
         fromEvent(document, "mousemove"),
@@ -143,10 +142,8 @@ export class GnarlComponent implements OnInit {
           )
         )
         .subscribe((event: MouseEvent | TouchEvent) => {
+          console.log('Mouse down')
           this.knobPoint = this.service.transformingFromEvent(this.center, event as ICartesianCoordinate)
         });
-        mouseUp$.subscribe( (event: MouseEvent | TouchEvent) => {
-          this.knobPoint = this.service.transformedFromEvent(this.center, event as ICartesianCoordinate)
-        })
     }
 }
