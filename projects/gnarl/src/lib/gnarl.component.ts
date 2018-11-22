@@ -5,7 +5,7 @@ import { fromEvent, merge } from 'rxjs';
 import { switchMap, takeUntil, throttleTime } from 'rxjs/operators';
 import * as _ from 'lodash';
 @Component({
-    selector: "lib-gnarl",
+    selector: "ls-gnarl",
     templateUrl: "./gnarl.component.html",
     styleUrls: ["./gnarl.component.scss"]
 })

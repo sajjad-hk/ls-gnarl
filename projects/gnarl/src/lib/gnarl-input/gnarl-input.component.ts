@@ -1,22 +1,19 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
-  selector: 'lib-gnarl-input',
-  templateUrl: './gnarl-input.component.html',
-  styleUrls: ['./gnarl-input.component.css']
+    selector: "ls-gnarl-input",
+    templateUrl: "./gnarl-input.component.html",
+    styleUrls: ["./gnarl-input.component.css"]
 })
 export class GnarlInputComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
+    @Input() value: number;
+    @Output() change: EventEmitter<any> = new EventEmitter();
 
-@Input() value: number
-@Output() change: EventEmitter<any> = new EventEmitter()
+    ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  update(event: number) {
-    this.change.emit(event)
-  }
-
+    update(event: number) {
+        this.change.emit(event);
+    }
 }
