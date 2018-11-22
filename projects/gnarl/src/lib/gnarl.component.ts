@@ -45,6 +45,11 @@ export class GnarlComponent implements OnInit {
 
     constructor(private service: GnarlService) {
     }
+    
+    onChange(event: number) {
+      const i = this.set.findIndex(x => x.value === event )
+      this.knobPoint = this.service.transformingByItemIndex(i)
+    }
 
     ngOnInit() {
       this.setObservables()
