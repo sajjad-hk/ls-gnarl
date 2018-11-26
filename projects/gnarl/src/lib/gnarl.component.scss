@@ -1,3 +1,7 @@
+div {
+    display: inline-block;
+    position: relative;
+}
 .gnarl {
     cursor: pointer;
 }
@@ -16,4 +20,10 @@ svg text {
 }
 svg text::selection {
     background: none;
+}
+
+ls-gnarl-input {
+    position: absolute;
+    top: 50%;
+    left: 50%; 
 }

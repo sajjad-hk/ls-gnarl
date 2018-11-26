@@ -1,6 +1,13 @@
 input {
-    height: 100px;
-    width: 100px;
-    font-size: 18pt;
+    border: none;
     text-align: center;
+    font-size: 20pt;
+    width: 100px;
+    height: 100px;
+    margin-left:-50px;
+    margin-top: -50px;
+}
+
+input::selection {
+    background: none;
 }

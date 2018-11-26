@@ -1,1 +1,7 @@
-<input #box type="text" value="{{value}}" (keyup)="update(box.value)" />
+<input
+    #box
+    type="text"
+    value="{{value}}"
+    (blur)="update(box.value)"
+    (keyup.enter)="update(box.value)"
+/>

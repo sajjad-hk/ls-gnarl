@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from "@angular/core";
 import { ICartesianCoordinate } from "./models/coordinates";
 import { GnarlService } from "./gnarl.service";
 import { fromEvent, merge } from 'rxjs';
@@ -10,7 +10,7 @@ import * as _ from 'lodash';
     styleUrls: ["./gnarl.component.scss"]
 })
 export class GnarlComponent implements OnInit {
-    
+
     @Input()
     gnarlRadius: number = 200;
     @Input()
@@ -25,14 +25,14 @@ export class GnarlComponent implements OnInit {
     knobColor: string = '#C0C0C0';
     @Input()
     knobStrokeWidth: number = 1;
-
     @Input()
     set: Array<any>
+    @Input() 
+    editableInput: boolean = true;
 
     knobPoint: ICartesianCoordinate;
-    item: any;
-    currentInd: number = 0
-    index: number = 0
+    currentItem: any;
+    currentIndex: number = 0
 
     @ViewChild('knob')
     knob: ElementRef;
@@ -48,19 +48,21 @@ export class GnarlComponent implements OnInit {
     
     onChange(event: number) {
       const i = this.set.findIndex(x => x.value === event )
-      this.knobPoint = this.service.transformingByItemIndex(i)
+      if (i >= 0)  {
+        this.knobPoint = this.service.transformingByItemIndex(i)
+      }
     }
 
     ngOnInit() {
       this.setObservables()
       this.service.setRadius(this.gnarlRadius)
       this.service.setNumberOfAcrs(this.set.length)
-      this.knobPoint = this.service.transformingByItemIndex(this.currentInd)
-      this.item = this.set[this.currentInd];
+      this.knobPoint = this.service.transformingByItemIndex(this.currentIndex)
+      this.currentItem = this.set[this.currentIndex];
       this.service.onTransforming.subscribe( (i: number) => {
-        this.item = this.set[i]
-        this.currentInd = i
-        console.log('On transforming', i, this.currentInd, this.set[i])
+        this.currentItem = this.set[i]
+        this.currentIndex = i
+        console.log('On transforming', i, this.currentIndex, this.set[i])
       })
     }
 
@@ -79,7 +81,7 @@ export class GnarlComponent implements OnInit {
       const orbFrame = this.gnarl.nativeElement.getBoundingClientRect();
       const px = orbFrame.left - bodyFrame.left;
       const py = orbFrame.top - bodyFrame.top;
-      const halfOfContainer = this.width / 2;
+      const halfOfContainer = this.width / 2;    
       return {
         x: px + halfOfContainer,
         y: py + halfOfContainer
@@ -106,12 +108,10 @@ export class GnarlComponent implements OnInit {
     }
 
     onMinus() {
-      console.log('on Minus',this.currentInd)
-      this.knobPoint = this.service.transformingByItemIndex(this.currentInd - 1)
+      this.knobPoint = this.service.transformingByItemIndex(this.currentIndex - 1)
     }
     onPlus() {
-      console.log('on Plus',this.currentInd)
-      this.knobPoint = this.service.transformingByItemIndex(this.currentInd + 1)
+      this.knobPoint = this.service.transformingByItemIndex(this.currentIndex + 1)
     }
 
     /**

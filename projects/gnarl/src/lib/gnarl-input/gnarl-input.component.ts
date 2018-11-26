@@ -9,9 +9,9 @@ export class GnarlInputComponent implements OnInit {
     constructor() {}
 
     @Input() value: number;
-    @Output() change: EventEmitter<any> = new EventEmitter();
-
-    ngOnInit() {}
+    @Output() change: EventEmitter<any> = new EventEmitter()
+    ngOnInit() {
+    }
 
     update(event: number) {
         this.change.emit(event);

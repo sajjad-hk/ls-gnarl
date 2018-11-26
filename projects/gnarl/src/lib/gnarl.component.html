@@ -1,68 +1,68 @@
-<svg #gnarl [attr.height]="width" [attr.width]="width">
-    <g [attr.transform]="transform()">
-        <circle
-            #rail
-            class="gnarl"
-            #gnarl
-            [attr.r]="gnarlRadius"
-            [attr.stroke-width]="gnarlStrokeWidth"
-            [attr.stroke]="gnarlColor"
-            fill="transparent"
-            [attr.opacity]="opacity"
-        />
-        <g>
+<div>
+    <svg #gnarl [attr.height]="width" [attr.width]="width">
+        <g [attr.transform]="transform()">
             <circle
-                #control
-                [attr.r]="(gnarlRadius * 7) / 10"
-                fill="transparent"
-            />
-
-            <g [attr.transform]="minusPos()">
-                <circle
-                    #minus
-                    [attr.r]="controlsWidth"
-                    fill=""
-                    class="controls"
-                    (click)="onMinus()"
-                />
-            </g>
-
-            <text
-                [attr.contentEditable]="true"
-                font-size="28"
-                text-anchor="middle"
-                [attr.opacity]="opacity"
-            >
-                {{ item?.value }}
-            </text>
-
-            <g [attr.transform]="plusPos()">
-                <circle
-                    #plus
-                    [attr.r]="controlsWidth"
-                    fill=""
-                    class="controls"
-                    (click)="onPlus()"
-                />
-            </g>
-        </g>
-        <g
-            #knob
-            class="knob"
-            [attr.fill]="knobColor"
-            [attr.transform]="getTranslate(knobPoint.x, knobPoint.y)"
-        >
-            <circle
-                [attr.r]="(knobRadius - knobStrokeWidth) / 2"
-                [attr.stroke-width]="knobStrokeWidth"
+                #rail
+                class="gnarl"
+                #gnarl
+                [attr.r]="gnarlRadius"
+                [attr.stroke-width]="gnarlStrokeWidth"
                 [attr.stroke]="gnarlColor"
-            />
-        </g>
-    </g>
-</svg>
+                fill="transparent"
+                [attr.opacity]="opacity"/>
+            <g>
+                <circle
+                    #control
+                    [attr.r]="(gnarlRadius * 7) / 10"
+                    fill="transparent"/>
 
-<ls-gnarl-input
-    type="text"
-    [value]="item?.value"
-    (change)="onChange($event)"
-></ls-gnarl-input>
+                <g [attr.transform]="minusPos()">
+                    <circle
+                        #minus
+                        [attr.r]="controlsWidth"
+                        fill="transparent"
+                        class="controls"
+                        (click)="onMinus()"/>
+                    <ng-content select=".down"></ng-content>
+                </g>
+
+                <text
+                    [attr.contentEditable]="true"
+                    font-size="28"
+                    text-anchor="middle"
+                    [attr.opacity]="opacity">
+                    {{ currentItem?.value }}
+                </text>
+
+                <g [attr.transform]="plusPos()">
+                    <circle
+                        #plus
+                        [attr.r]="controlsWidth"
+                        fill="transparent"
+                        class="controls"
+                        (click)="onPlus()"
+                    />
+                    <ng-content select=".up"></ng-content>
+                </g>
+            </g>
+            <g
+                #knob
+                class="knob"
+                fill=""
+                [attr.transform]="getTranslate(knobPoint.x, knobPoint.y)">
+                <circle
+                    [attr.r]="(knobRadius - knobStrokeWidth) / 2"
+                    [attr.stroke-width]="knobStrokeWidth"
+                    [attr.fill]="knobColor"
+                    [attr.stroke]="gnarlColor"
+                />
+                <ng-content select=".knob"></ng-content>
+            </g>
+        </g>
+    </svg>
+
+    <ls-gnarl-input *ngIf="editableInput"
+        [value]="currentItem?.value"
+        (change)="onChange($event)">
+    </ls-gnarl-input>
+</div>
