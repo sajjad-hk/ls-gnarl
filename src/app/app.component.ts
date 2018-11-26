@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  set1 = [
+  set = [
     {key: 0, value: 'A'},
     {key: 1, value: 'B'},
     {key: 3, value: 'C'},
@@ -34,7 +34,7 @@ export class AppComponent {
     {key: 26, value: 'Y'},
     {key: 27, value: 'Z'},
   ]
-    set = [{key: 0, value:'4a'},
+    set2 = [{key: 0, value:'4a'},
     {key: 1, value:'4a+'},
     {key: 2, value:'4b'},
     {key: 3, value:'4b+'},
