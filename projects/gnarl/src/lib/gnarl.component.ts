@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, ViewEncapsulation } from "@angular/core";
 import { ICartesianCoordinate } from "./models/coordinates";
 import { GnarlService } from "./gnarl.service";
 import { fromEvent, merge } from 'rxjs';
@@ -7,7 +7,8 @@ import * as _ from 'lodash';
 @Component({
     selector: "ls-gnarl",
     templateUrl: "./gnarl.component.html",
-    styleUrls: ["./gnarl.component.scss"]
+    styleUrls: ["./gnarl.component.scss"],
+    encapsulation: ViewEncapsulation.None
 })
 export class GnarlComponent implements OnInit {
 
@@ -29,6 +30,8 @@ export class GnarlComponent implements OnInit {
     set: Array<any>
     @Input() 
     editableInput: boolean = true;
+    @Input() 
+    editBoxIgnorCase: boolean = true
 
     knobPoint: ICartesianCoordinate;
     currentItem: any;
@@ -46,10 +49,18 @@ export class GnarlComponent implements OnInit {
     constructor(private service: GnarlService) {
     }
     
-    onChange(event: number) {
-      const i = this.set.findIndex(x => x.value === event )
+    onChange(event: string) {
+      const i = this.set.findIndex(x => this.compareTo(x.value, event, this.editBoxIgnorCase) )
       if (i >= 0)  {
         this.knobPoint = this.service.transformingByItemIndex(i)
+      }
+    }
+
+    compareTo(value1: string, value2: string, ignoreCase: boolean) {
+      if (ignoreCase) {
+        return value1.toLocaleLowerCase() === value2.toLocaleLowerCase()
+      } else {
+        return value1 === value2
       }
     }
 

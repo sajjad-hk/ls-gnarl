@@ -16,32 +16,19 @@
                     [attr.r]="(gnarlRadius * 7) / 10"
                     fill="transparent"/>
 
-                <g [attr.transform]="minusPos()">
-                    <circle
-                        #minus
-                        [attr.r]="controlsWidth"
-                        fill="transparent"
-                        class="controls"
-                        (click)="onMinus()"/>
+                <g class="controls" [attr.transform]="minusPos()" (click)="onMinus()">
                     <ng-content select=".down"></ng-content>
                 </g>
 
-                <text
+                <!-- <text
                     [attr.contentEditable]="true"
                     font-size="28"
                     text-anchor="middle"
                     [attr.opacity]="opacity">
                     {{ currentItem?.value }}
-                </text>
+                </text> -->
 
-                <g [attr.transform]="plusPos()">
-                    <circle
-                        #plus
-                        [attr.r]="controlsWidth"
-                        fill="transparent"
-                        class="controls"
-                        (click)="onPlus()"
-                    />
+                <g class="controls" [attr.transform]="plusPos()" (click)="onPlus()">
                     <ng-content select=".up"></ng-content>
                 </g>
             </g>
@@ -54,14 +41,14 @@
                     [attr.r]="(knobRadius - knobStrokeWidth) / 2"
                     [attr.stroke-width]="knobStrokeWidth"
                     [attr.fill]="knobColor"
-                    [attr.stroke]="gnarlColor"
+                    [attr.stroke]=""
                 />
                 <ng-content select=".knob"></ng-content>
             </g>
         </g>
     </svg>
 
-    <ls-gnarl-input *ngIf="editableInput"
+    <ls-gnarl-input class="gnarl-editor" *ngIf="editableInput"
         [value]="currentItem?.value"
         (change)="onChange($event)">
     </ls-gnarl-input>

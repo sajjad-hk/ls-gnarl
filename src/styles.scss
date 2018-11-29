@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+.general {
+    ls-gnarl {
+        ls-gnarl-input {
+            .input-val {
+                color: white;
+                font-size: 40pt;
+                text-shadow:inset 0 0 5px 5px #888;
+            }
+            .input-val:focus {
+                border: none;
+                outline: none;
+            }
+        }
+    }
+}
