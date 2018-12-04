@@ -13,41 +13,44 @@ import * as _ from 'lodash';
 export class GnarlComponent implements OnInit {
 
     @Input()
-    gnarlRadius: number = 200;
+    gnarlRadius: number = 200
     @Input()
-    gnarlColor: string = '#171717';
+    gnarlColor: string = '#171717'
     @Input()
-    gnarlStrokeWidth: number = 5;
+    gnarlStrokeWidth: number = 5
     @Input()
-    opacity: number = 0.25;
+    opacity: number = 0.25
     @Input()
-    knobRadius: number = 20;
+    knobRadius: number = 20
     @Input()
-    knobColor: string = '#C0C0C0';
+    knobColor: string = '#C0C0C0'
     @Input()
-    knobStrokeWidth: number = 1;
+    knobStrokeWidth: number = 1
     @Input()
     set: Array<any>
     @Input() 
-    editableInput: boolean = true;
+    editableInput: boolean = true
     @Input() 
     editBoxIgnorCase: boolean = true
+    @Input()
+    buttonPos: string
 
-    knobPoint: ICartesianCoordinate;
-    currentItem: any;
-    currentIndex: number = 0
+    knobPoint: ICartesianCoordinate
+    currentItem: any
+    currentIndex: number
 
     @ViewChild('knob')
-    knob: ElementRef;
+    knob: ElementRef
     @ViewChild('gnarl')
-    gnarl: ElementRef;
+    gnarl: ElementRef
     @ViewChild('rail')
-    rail: ElementRef;
+    rail: ElementRef
     @ViewChild('control')
-    control: ElementRef;
+    control: ElementRef
 
-    constructor(private service: GnarlService) {
-    }
+    @Output() valueChange = new EventEmitter();
+
+    constructor(private service: GnarlService) { }
     
     onChange(event: string) {
       const i = this.set.findIndex(x => this.compareTo(x.value, event, this.editBoxIgnorCase) )
@@ -56,9 +59,19 @@ export class GnarlComponent implements OnInit {
       }
     }
 
+    @Input()
+    get value() {
+      return this.currentItem
+    }
+
+    set value(value: object) {
+        this.currentItem = value
+        this.valueChange.emit(value)
+    }
+
     compareTo(value1: string, value2: string, ignoreCase: boolean) {
       if (ignoreCase) {
-        return value1.toLocaleLowerCase() === value2.toLocaleLowerCase()
+        return _.lowerCase(value1) === _.lowerCase(value2)
       } else {
         return value1 === value2
       }
@@ -68,10 +81,10 @@ export class GnarlComponent implements OnInit {
       this.setObservables()
       this.service.setRadius(this.gnarlRadius)
       this.service.setNumberOfAcrs(this.set.length)
+      this.currentIndex = this.value['key']
       this.knobPoint = this.service.transformingByItemIndex(this.currentIndex)
-      this.currentItem = this.set[this.currentIndex];
       this.service.onTransforming.subscribe( (i: number) => {
-        this.currentItem = this.set[i]
+        this.value = this.set[i]
         this.currentIndex = i
         console.log('On transforming', i, this.currentIndex, this.set[i])
       })
@@ -88,14 +101,14 @@ export class GnarlComponent implements OnInit {
     }
 
     get center(): ICartesianCoordinate {
-      const bodyFrame = document.body.getBoundingClientRect();
-      const orbFrame = this.gnarl.nativeElement.getBoundingClientRect();
-      const px = orbFrame.left - bodyFrame.left;
-      const py = orbFrame.top - bodyFrame.top;
-      const halfOfContainer = this.width / 2;    
+      const bodyFrame = document.body.getBoundingClientRect()
+      const orbFrame = this.gnarl.nativeElement.getBoundingClientRect()
+      const px = orbFrame.left - bodyFrame.left
+      const py = orbFrame.top - bodyFrame.top
+      const halfOfContainer = this.width / 2
       return {
-        x: px + halfOfContainer,
-        y: py + halfOfContainer
+        clientX: px + halfOfContainer,
+        clientY: py + halfOfContainer
       };
     }
 
@@ -110,12 +123,28 @@ export class GnarlComponent implements OnInit {
 
     plusPos() {
       const controlRect = this.control.nativeElement.getBoundingClientRect()
-      return this.getTranslate((controlRect.width - this.controlsWidth) / 2, 0)
+      switch(this.buttonPos) {
+        case 'N':
+          return ''
+        case 'V':
+          return this.getTranslate(0, - (controlRect.width - this.controlsWidth) / 2.5)
+        case 'H':
+        default:
+          return this.getTranslate((controlRect.width - this.controlsWidth) / 2.5, 0)
+      }
     }
 
     minusPos(): string {
       const controlRect = this.control.nativeElement.getBoundingClientRect()
-      return this.getTranslate(- (controlRect.width - this.controlsWidth) / 2, 0)
+      switch(this.buttonPos) {
+        case 'N':
+          return ''
+        case 'V':
+          return this.getTranslate(0, (controlRect.width - this.controlsWidth) / 2.5)
+        case 'H':
+        default:
+        return this.getTranslate(- (controlRect.width - this.controlsWidth) / 2.5, 0)
+      }
     }
 
     onMinus() {
@@ -158,8 +187,12 @@ export class GnarlComponent implements OnInit {
           )
         )
         .subscribe((event: MouseEvent | TouchEvent) => {
-          console.log('Mouse down')
-          this.knobPoint = this.service.transformingFromEvent(this.center, event as ICartesianCoordinate)
+          console.log('Mouse down',{event})
+          let eventPoint = event as ICartesianCoordinate
+          if (event.type.includes('touch')) {
+            eventPoint = (event as TouchEvent).changedTouches[0] as ICartesianCoordinate
+          }
+          this.knobPoint = this.service.transformingFromEvent(this.center, eventPoint)
         });
     }
 }

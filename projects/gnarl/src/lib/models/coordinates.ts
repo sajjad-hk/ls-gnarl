@@ -1,4 +1,4 @@
 export interface ICartesianCoordinate {
-    x: number
-    y: number
+    clientX: number
+    clientY: number
 }

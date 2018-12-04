@@ -1,4 +1,4 @@
-<div>
+<div class="gnarl-inner-container">
     <svg #gnarl [attr.height]="width" [attr.width]="width">
         <g [attr.transform]="transform()">
             <circle
@@ -13,22 +13,14 @@
             <g>
                 <circle
                     #control
-                    [attr.r]="(gnarlRadius * 7) / 10"
+                    [attr.r]="(gnarlRadius * 8.5) / 10"
                     fill="transparent"/>
 
-                <g class="controls" [attr.transform]="minusPos()" (click)="onMinus()">
+                <g class="controls" *ngIf="buttonPos==='N'" [attr.transform]="minusPos()" (click)="onMinus()">
                     <ng-content select=".down"></ng-content>
                 </g>
 
-                <!-- <text
-                    [attr.contentEditable]="true"
-                    font-size="28"
-                    text-anchor="middle"
-                    [attr.opacity]="opacity">
-                    {{ currentItem?.value }}
-                </text> -->
-
-                <g class="controls" [attr.transform]="plusPos()" (click)="onPlus()">
+                <g class="controls" *ngIf="buttonPos==='N'" [attr.transform]="plusPos()" (click)="onPlus()">
                     <ng-content select=".up"></ng-content>
                 </g>
             </g>
@@ -36,7 +28,7 @@
                 #knob
                 class="knob"
                 fill=""
-                [attr.transform]="getTranslate(knobPoint.x, knobPoint.y)">
+                [attr.transform]="getTranslate(knobPoint.clientX, knobPoint.clientY)">
                 <circle
                     [attr.r]="(knobRadius - knobStrokeWidth) / 2"
                     [attr.stroke-width]="knobStrokeWidth"
@@ -48,7 +40,8 @@
         </g>
     </svg>
 
-    <ls-gnarl-input class="gnarl-editor" *ngIf="editableInput"
+    <ls-gnarl-input class="gnarl-editor"
+        [editable]="editableInput"
         [value]="currentItem?.value"
         (change)="onChange($event)">
     </ls-gnarl-input>

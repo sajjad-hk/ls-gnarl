@@ -1,31 +1,32 @@
-<div class="general">
-    <ls-gnarl class="tttt"
+<div class="gnarl-container">
+	<ls-gnarl
+		[buttonPos] = 'N'
+		[(value)] = "item2"
 		[gnarlRadius]="170"
 		[gnarlStrokeWidth]="6"
-		[knobRadius]="35"
 		[knobStrokeWidth]="1"
 		[opacity]="0.2"
-		[set]="set"
+		[set]="set2"
 		[knobColor]='knobColor'
 		[editableInput]="true">
 
 	<!-- Down arrow icon -->
 		<svg class="down" width="40" height="40" x="-20" y="-20"
 		xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">       
-			<image xlink:href="../assets/resources/minus.svg" height="40" width="40"/>
+			<image xlink:href="../assets/resources/chevron_down.svg" height="40" width="40"/>
 		</svg>
 	
 
 	<!-- Up arrow icon -->
 		<svg class="up" width="40" height="40" x="-20" y="-20"
 		xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">       
-			<image class="knob11" xlink:href="../assets/resources/plus.svg" height="40" width="40"/>
+			<image class="knob11" xlink:href="../assets/resources/chevron_up.svg" height="40" width="40"/>
 		</svg>
 
 	<!-- Knob icon -->
-		<svg class="knob1" width="40" height="40" x="-20" y="-20"
+		<svg class="knob" width="40" height="40" x="-20" y="-20"
 		xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">       
-			<image xlink:href="../assets/resources/button.svg" height="40" width="40"/>
+			<image xlink:href="../assets/resources/knob.svg" height="40" width="40"/>
 		</svg>
 
 	</ls-gnarl>

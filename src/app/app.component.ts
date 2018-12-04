@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'ngs-root',
@@ -7,7 +7,10 @@ import { Component, ViewEncapsulation } from '@angular/core';
 })
 export class AppComponent {
 
+
   knobColor = '#ffffff'
+  item = {key: 4, value: 'D'}
+  item2 = {key: 2, value: '4b'}
   
   set = [
     {key: 0, value: 'A'},
@@ -37,7 +40,8 @@ export class AppComponent {
     {key: 24, value: 'Y'},
     {key: 25, value: 'Z'},
   ]
-    set2 = [{key: 0, value:'4a'},
+    set2 = [
+    {key: 0, value:'4a'},
     {key: 1, value:'4a+'},
     {key: 2, value:'4b'},
     {key: 3, value:'4b+'},

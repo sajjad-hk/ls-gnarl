@@ -11,6 +11,7 @@ export class GnarlService {
   stepSize: number
   radianSteps: Array<number>
   onTransforming: EventEmitter<number> = new EventEmitter()
+  
   constructor() { }
 
   setRadius(radius: number) {
@@ -22,7 +23,6 @@ export class GnarlService {
   }
 
   transformingByItemIndex(index: number) {
-    console.log('by index', index, this.radianSteps[index])
     index = index >= this.numberOfArcs ? 0 : index < 0 ? this.numberOfArcs - 1 : index
     this.onTransforming.emit(index)
     const angle = this.radianSteps[index]
@@ -30,14 +30,14 @@ export class GnarlService {
   }
 
   transformedFromEvent(center: ICartesianCoordinate, toPoint: ICartesianCoordinate) {
-    console.log('%c Start => transformedFromEvent function:', 'color: red; font-weight: bold;')
+    // console.log('%c Start => transformedFromEvent function:', 'color: red; font-weight: bold;')
     let angle = this.toPolar(center, toPoint)
     angle = this.wrapRadianTo2Pi(angle)
     const index = this.findStep(angle)
     angle = this.radianSteps[index]
     this.onTransforming.emit(index)
     console.log({angle, index})
-    console.log('%c End => transformedFromEvent function:', 'color: red; font-weight: bold;')
+    // console.log('%c End => transformedFromEvent function:', 'color: red; font-weight: bold;')
     return this.toCartisian(angle)
   }
 
@@ -72,12 +72,12 @@ export class GnarlService {
    * @param point point on circle 
    */
   transformingFromEvent(center: ICartesianCoordinate, toPoint: ICartesianCoordinate) {
-    console.log('%c Start => transformingFromEvent function:', 'color: orange; font-weight: bold;')
+    // console.log('%c Start => transformingFromEvent function:', 'color: orange; font-weight: bold;')
     let angle = this.toPolar(center, toPoint)
     angle = this.wrapRadianTo2Pi(angle)
     const index = this.findStep(angle)
     this.onTransforming.emit(index)
-    console.log('%c End => transformingFromEvent function:', 'color: green; font-weight: bold;')
+    // console.log('%c End => transformingFromEvent function:', 'color: green; font-weight: bold;')
     return this.toCartisian(angle)
   }
 
@@ -87,13 +87,13 @@ export class GnarlService {
    */
   toPolar(center: ICartesianCoordinate, point: ICartesianCoordinate) {
 
-    return Math.atan2(point.y - center.y, point.x - center.x) + Math.PI / 2
+    return Math.atan2(point.clientY - center.clientY, point.clientX - center.clientX) + Math.PI / 2
   }
 
   toCartisian(radian: number): ICartesianCoordinate {
     return {
-      x: this.radius * Math.cos(radian - Math.PI / 2),
-      y: this.radius * Math.sin(radian - Math.PI / 2)
+      clientX: this.radius * Math.cos(radian - Math.PI / 2),
+      clientY: this.radius * Math.sin(radian - Math.PI / 2)
     }
   }
 

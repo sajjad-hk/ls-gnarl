@@ -1,7 +1,12 @@
-<input class="input-val"
-    #box
-    type="text"
-    value="{{value}}"
-    (blur)="update(box.value)"
-    (keyup.enter)="update(box.value)"
-/>
+<input class="input-txt-value" 
+        [hidden]="!editingMode" 
+        *ngIf="editable"
+        #box
+        type="text"
+        value="{{value}}"
+        (blur)="update(box.value)"
+        (keyup.enter)="update(box.value)"/>
+
+<div class="output-txt-value" 
+        *ngIf="!editingMode" 
+        (click)="startEditing()">{{value}}</div>

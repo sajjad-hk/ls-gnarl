@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation  } from "@angular/core";
+import { Component, 
+            OnInit, 
+            Input, 
+            Output, 
+            EventEmitter, 
+            ViewEncapsulation, 
+            ViewChild, 
+            ElementRef  } from "@angular/core"
 
 @Component({
     selector: "ls-gnarl-input",
@@ -7,14 +14,30 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation  } fr
     encapsulation: ViewEncapsulation.None
 })
 export class GnarlInputComponent implements OnInit {
-    constructor() {}
-
-    @Input() value: number;
+    
+    editingMode: boolean
+    @Input() value: number
+    @Input() editable: boolean
     @Output() change: EventEmitter<any> = new EventEmitter()
-    ngOnInit() {
-    }
+    @ViewChild('box') editInput: ElementRef
+
+    constructor() {}
+    ngOnInit() { }
 
     update(event: number) {
-        this.change.emit(event);
+        this.change.emit(event)
+        if (this.editable) {
+            this.editingMode = false
+        }
+    }
+
+    startEditing() {
+        if (this.editable) {
+            this.editingMode = true
+            setTimeout(() => {
+                this.editInput.nativeElement.focus()
+                this.editInput.nativeElement.select()
+            }, 100)
+        }
     }
 }

@@ -1,16 +1,21 @@
-input {   
+.input-txt-value {   
     border: 0;
     background-color: transparent;
     font-size: 20pt;    
     height: 100%;
     text-align: center;
     width: 100%;
-    &:focus,
-    &:active {
-        border: 1px solid #888;
-    }
 }
 
-input::selection {
+.output-txt-value {
+    border: 0;
+    height: 100%;
+    width: 100%;
+    font-size: 25pt;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.output-txt-value::selection {
     background: none;
 }

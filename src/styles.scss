@@ -1,15 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
-.general {
+.gnarl-container {
     ls-gnarl {
         ls-gnarl-input {
-            .input-val {
+            .input-txt-value {
                 color: white;
-                font-size: 40pt;
-                text-shadow:inset 0 0 5px 5px #888;
+                font: Arial;
+                font-size: 30pt;
+
             }
-            .input-val:focus {
-                border: none;
+            .input-txt-value:focus {
+                border-bottom: 1px solid white;
                 outline: none;
+            }
+            .output-txt-value {
+                color: white;
+                font: Arial;
+                text-shadow: 2px 2px #000;
             }
         }
     }
