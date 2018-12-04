@@ -86,7 +86,7 @@ export class GnarlComponent implements OnInit {
       this.service.onTransforming.subscribe( (i: number) => {
         this.value = this.set[i]
         this.currentIndex = i
-        console.log('On transforming', i, this.currentIndex, this.set[i])
+        // console.log('On transforming', i, this.currentIndex, this.set[i])
       })
     }
 
@@ -187,7 +187,6 @@ export class GnarlComponent implements OnInit {
           )
         )
         .subscribe((event: MouseEvent | TouchEvent) => {
-          console.log('Mouse down',{event})
           let eventPoint = event as ICartesianCoordinate
           if (event.type.includes('touch')) {
             eventPoint = (event as TouchEvent).changedTouches[0] as ICartesianCoordinate

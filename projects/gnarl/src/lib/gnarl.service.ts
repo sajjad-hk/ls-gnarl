@@ -11,7 +11,7 @@ export class GnarlService {
   stepSize: number
   radianSteps: Array<number>
   onTransforming: EventEmitter<number> = new EventEmitter()
-  
+
   constructor() { }
 
   setRadius(radius: number) {
@@ -36,7 +36,7 @@ export class GnarlService {
     const index = this.findStep(angle)
     angle = this.radianSteps[index]
     this.onTransforming.emit(index)
-    console.log({angle, index})
+    // console.log({angle, index})
     // console.log('%c End => transformedFromEvent function:', 'color: red; font-weight: bold;')
     return this.toCartisian(angle)
   }
