@@ -1,14 +1,11 @@
 # GnarlPackage
-
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
 
+The need for ngKnob in angular is enough in order to have new Circular/Round slider (ngKnob style) component! With Gnarl I am try to prepare such slider in order to give posiblity of any set to slider.
+
 ## Development server
-
+You can run this demo application as any angular project:
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
