@@ -16,12 +16,12 @@
                     [attr.r]="(gnarlRadius * 8.5) / 10"
                     fill="transparent"/>
 
-                <g class="controls" *ngIf="buttonPos==='N'" [attr.transform]="minusPos()" (click)="onMinus()">
-                    <ng-content select=".down"></ng-content>
+                <g class="controls" [attr.transform]="minusPos()" (click)="onMinus()">
+                    <ng-content select=".down" *ngIf="buttonPos !== 'N'"></ng-content>
                 </g>
 
-                <g class="controls" *ngIf="buttonPos==='N'" [attr.transform]="plusPos()" (click)="onPlus()">
-                    <ng-content select=".up"></ng-content>
+                <g class="controls" [attr.transform]="plusPos()" (click)="onPlus()">
+                    <ng-content select=".up" *ngIf="buttonPos !== 'N'"></ng-content>
                 </g>
             </g>
             <g

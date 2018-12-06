@@ -78,6 +78,7 @@ export class GnarlComponent implements OnInit {
     }
 
     ngOnInit() {
+
       this.setObservables()
       this.service.setRadius(this.gnarlRadius)
       this.service.setNumberOfAcrs(this.set.length)
