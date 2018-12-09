@@ -6,7 +6,7 @@ Gnarls is a angular component enabling us to map any set of values to a circular
 
 Use `npm install Gnarls --save` to install Gnarls in your angular project.
 
-## Importing example
+## Importing/Usage
 
 app.module.ts
 
@@ -114,6 +114,21 @@ app.component.html
 
 </ls-gnarl>
 ```
+
+## Attributes
+
+| Attribute name  | Possible Value | Description |
+| ------------- | ------------- | ---------------
+| set  | [{key: 0, value: 'A'},{key: 1, value: 'B'}, ...]  | - |
+| value  | any member of set: {key: 0, value: 'A'}  | - |
+| buttonPos | 'V', 'H', 'N' | - |
+| gnarlRadius | a number:  150 | - |
+| gnarlStrokeWidth | a number: 5 | - |
+| knobStrokeWidth | a number: 2 | - |
+| opacity | 0 - 1 number: 0.2 | - |
+| knobColor | a Hex Color Code: '#808080' | - |
+| editableInput | a boolean value:  true | - |
+| invalidInput | a callback function : `()=>console.log('I am invalid')` | - |
 
 ## Wait for
 
