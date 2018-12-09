@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { invalid } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'ngs-root',
@@ -7,8 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-
-  knobColor = '#ffffff'
   item = {key: 4, value: 'D'}
   item2 = {key: 2, value: '4b'}
   
@@ -72,5 +71,9 @@ export class AppComponent {
     {key: 28, value:'8c'},
     {key: 29, value:'8c+'},
     {key: 30, value:'9a'},]
+
+    invalid() {
+      alert('Invalid Input')
+    }
   
 }

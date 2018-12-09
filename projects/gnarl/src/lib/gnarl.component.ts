@@ -23,7 +23,7 @@ export class GnarlComponent implements OnInit {
     @Input()
     knobRadius: number = 20
     @Input()
-    knobColor: string = '#C0C0C0'
+    knobColor: string
     @Input()
     knobStrokeWidth: number = 1
     @Input()
@@ -48,7 +48,8 @@ export class GnarlComponent implements OnInit {
     @ViewChild('control')
     control: ElementRef
 
-    @Output() valueChange = new EventEmitter();
+    @Output() valueChange = new EventEmitter()
+    @Output() invalidInput = new EventEmitter();
 
     constructor(private service: GnarlService) { }
     
@@ -56,6 +57,8 @@ export class GnarlComponent implements OnInit {
       const i = this.set.findIndex(x => this.compareTo(x.value, event, this.editBoxIgnorCase) )
       if (i >= 0)  {
         this.knobPoint = this.service.transformingByItemIndex(i)
+      } else {
+        this.invalidInput.emit()
       }
     }
 

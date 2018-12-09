@@ -1,7 +1,6 @@
-<input class="input-txt-value" 
+<input #box class="input-txt-value" 
         [hidden]="!editingMode" 
         *ngIf="editable"
-        #box
         type="text"
         value="{{value}}"
         (blur)="update(box.value)"
