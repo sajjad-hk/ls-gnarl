@@ -7,8 +7,10 @@ Gnarls is a angular component enabling us to map any set of values to a circular
 Use `npm install Gnarls --save` to install Gnarls in your angular project.
 
 ## Importing example
+
 app.module.ts
-```
+
+```typescript
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -30,8 +32,10 @@ import { AppComponent } from './app.component';
 export class AppModule { }
 
 ```
+
 app.component.ts
-```
+
+```typescript
 import { Component } from '@angular/core';
 
 @Component({
@@ -73,40 +77,44 @@ export class AppComponent {
   ]
 }
 ```
+
 app.component.html
-```
+
+```html
 <ls-gnarl
-		[(value)] = "item"
-		(invalidInput) = "invalid()"
-		[buttonPos] = "'V'"
-		[gnarlRadius]="170"
-		[gnarlStrokeWidth]="6"
-		[knobStrokeWidth]="1"
-		[opacity]="0.2"
-		[set]="set"
-		[knobColor]='knobColor'
-		[editableInput]="true">
+    [(value)] = "item"
+    (invalidInput) = "invalid()"
+    [buttonPos] = "'V'"
+    [gnarlRadius]="170"
+    [gnarlStrokeWidth]="6"
+    [knobStrokeWidth]="1"
+    [opacity]="0.2"
+    [set]="set"
+    [knobColor]='knobColor'
+    [editableInput]="true">
 
-	<!-- Down arrow icon -->
-		<svg class="down" width="40" height="40" x="-20" y="-20"
-		xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">       
-			<!-- <image xlink:href="../assets/resources/chevron_down.svg" height="40" width="40"/> -->
-		</svg>
-	
+<!-- Down arrow icon -->
+  <svg class="down" width="40" height="40" x="-20" y="-20"
+    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- <image xlink:href="../assets/resources/chevron_down.svg" height="40" width="40"/> -->
+  </svg>
 
-	<!-- Up arrow icon -->
-		<svg class="up" width="40" height="40" x="-20" y="-20"
-		xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">       
-			<!-- <image xlink:href="../assets/resources/chevron_up.svg" height="40" width="40"/> -->
-		</svg>
 
-	<!-- Knob icon -->
-		<svg class="knob" width="40" height="40" x="-20" y="-20"
-		xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">       
-			<!-- <image xlink:href="../assets/resources/knob.svg" height="40" width="40"/> -->
-		</svg>
+  <!-- Up arrow icon -->
+    <svg class="up" width="40" height="40" x="-20" y="-20"
+    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <!-- <image xlink:href="../assets/resources/chevron_up.svg" height="40" width="40"/> -->
+    </svg>
+
+  <!-- Knob icon -->
+    <svg class="knob" width="40" height="40" x="-20" y="-20"
+    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <!-- <image xlink:href="../assets/resources/knob.svg" height="40" width="40"/> -->
+    </svg>
 
 </ls-gnarl>
 ```
-#
-# Will be more documentation soon
+
+## Wait for
+
+More documentation will come soon!
