@@ -1,4 +1,5 @@
 <input #box class="input-txt-value" 
+        spellcheck="false"
         [hidden]="!editingMode" 
         *ngIf="editable"
         type="text"
@@ -8,4 +9,6 @@
 
 <div class="output-txt-value" 
         *ngIf="!editingMode" 
-        (click)="startEditing()">{{value}}</div>
+        (click)="startEditing()"> 
+        <div>{{value}}</div>
+</div>

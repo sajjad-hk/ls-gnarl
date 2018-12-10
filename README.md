@@ -75,6 +75,13 @@ export class AppComponent {
     {key: 24, value: 'Y'},
     {key: 25, value: 'Z'},
   ]
+  onInvalidInput() {
+    console.log('Invalid Input')
+  }
+
+  onValueChange() {
+    console.log(this.item);
+  }
 }
 ```
 
@@ -83,7 +90,8 @@ app.component.html
 ```html
 <ls-gnarl
     [(value)] = "item"
-    (invalidInput) = "invalid()"
+    (invalidInput) = "onInvalidInput()"
+    (valueChange) = "onValueChange()"
     [buttonPos] = "'V'"
     [gnarlRadius]="170"
     [gnarlStrokeWidth]="6"
@@ -117,19 +125,18 @@ app.component.html
 
 ## Attributes
 
-| Attribute name  | Possible Value | Description |
-| ------------- | ------------- | ---------------
-| set  | [{key: 0, value: 'A'},{key: 1, value: 'B'}, ...]  | - |
-| value  | any member of set: {key: 0, value: 'A'}  | - |
-| buttonPos | 'V', 'H', 'N' | - |
-| gnarlRadius | a number:  150 | - |
-| gnarlStrokeWidth | a number: 5 | - |
-| knobStrokeWidth | a number: 2 | - |
-| opacity | 0 - 1 number: 0.2 | - |
-| knobColor | a Hex Color Code: '#808080' | - |
-| editableInput | a boolean value:  true | - |
-| invalidInput | a callback function : `()=>console.log('I am invalid')` | - |
+|  Attribute name  | Possible Value                                          | Description |
+| ---------------- | ------------------------------------------------------- | ---------------
+| set  | [{key: 0, value: 'A'},{key: 1, value: 'B'}, ...]  | The structure of array you need to follow for this component. |
+| value  | any member of set: {key: 0, value: 'A'}  | The carrot bind value can help to set first value and value dynamically. |
+| buttonPos | 'V', 'H', 'N' | positioning the control buttons Horizantal, Vertical, None. |
+| gnarlRadius | a number:  150 | Radius of slider. |
+| gnarlStrokeWidth | a number: 5 | stroke of slide.r |
+| knobStrokeWidth | a number: 2 | strok of knob in case you don't want to use icon. |
+| opacity | 0 - 1 number: 0.2 | opacity of slider. |
+| knobColor | a Hex Color Code: '#808080' | Color for knob in case you don't want to use icon. |
+| editableInput | a boolean value:  true | have editable Input in center of circle. |
+| invalidInput | a callback function : `()=>console.log('I am invalid')` | this callback make sense when you need to have editable input and take action in case of invalid input. |
+| valueChange | a callback function: `()=>console.log(item)` | This function would help if you need take action on value change. |
 
-## Wait for
-
-More documentation will come soon!
+### Please share with me your suggestions ;)

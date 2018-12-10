@@ -72,8 +72,12 @@ export class AppComponent {
     {key: 29, value:'8c+'},
     {key: 30, value:'9a'},]
 
-    invalid() {
+    onInvalidInput() {
       alert('Invalid Input')
+    }
+
+    onValueChange() {
+      console.log(this.item2);
     }
   
 }
