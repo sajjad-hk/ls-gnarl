@@ -54,6 +54,9 @@ export class GnarlComponent implements OnInit {
     constructor(private service: GnarlService) { }
     
     onChange(event: string) {
+      if (_.isObject(event)) {
+        return
+      }
       const i = this.set.findIndex(x => this.compareTo(x.value, event, this.editBoxIgnorCase) )
       if (i >= 0)  {
         this.knobPoint = this.service.transformingByItemIndex(i)
