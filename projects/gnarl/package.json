@@ -1,11 +1,19 @@
 {
   "name": "gnarls",
-  "version": "0.0.4",
+  "version": "0.0.5",
+  "author": "Sajjad Hassanpour <s.hassanpour@gmail.com> ()",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/sajjad-hk/ls-gnarl"
+  },
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-    "lodash": "^4.17.11",
-      "rxjs": "~6.2.0"
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
   },
+  "whitelistedNonPeerDependencies": {
+    "rxjs": "~6.2.0",
+    "lodash": "^4.17.11"
+  },
+  
   "license" : "LICENSE"
 }
