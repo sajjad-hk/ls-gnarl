@@ -16,18 +16,40 @@ import { Component,
 export class GnarlInputComponent implements OnInit {
     
     editingMode: boolean
-    @Input() value: number
+    value: string
+    invalid: boolean
     @Input() editable: boolean
-    @Output() change: EventEmitter<any> = new EventEmitter()
+    @Input() validInputs: string[]
+    @Output() inputValueChange: EventEmitter<any> = new EventEmitter()
+    @Output() inputValueEnter: EventEmitter<any> = new EventEmitter()
+    @Output() invalidValueEnterd: EventEmitter<any> = new EventEmitter()
     @ViewChild('box') editInput: ElementRef
 
     constructor() {}
     ngOnInit() { }
 
-    update(event: number) {
-        this.change.emit(event)
-        if (this.editable) {
-            this.editingMode = false
+    @Input()
+    get inputValue() {
+        return this.value
+    }
+
+    set inputValue(value: string) {
+        this.value = value
+        this.inputValueChange.emit(value)
+    }
+
+    onBlur(event: any) {
+        this.inputValueEnter.emit(event)
+        if (this.validInputs.includes(event.target.value)) {
+            this.invalid = false
+            this.inputValue = event.target.value
+            if (this.editable) {
+                this.editingMode = false
+            }
+        } else {
+            this.invalidValueEnterd.emit()
+            this.editInput.nativeElement.focus()
+            this.invalid = true
         }
     }
 

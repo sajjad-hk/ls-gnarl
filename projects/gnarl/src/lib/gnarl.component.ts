@@ -38,6 +38,8 @@ export class GnarlComponent implements OnInit {
     knobPoint: ICartesianCoordinate
     currentItem: any
     currentIndex: number
+    currentValue: string
+    validInputValues: string[]
 
     @ViewChild('knob')
     knob: ElementRef
@@ -53,16 +55,17 @@ export class GnarlComponent implements OnInit {
 
     constructor(private service: GnarlService) { }
     
-    onChange(event: string) {
-      if (_.isObject(event)) {
-        return
-      }
-      const i = this.set.findIndex(x => this.compareTo(x.value, event, this.editBoxIgnorCase) )
+
+    onValueEnter(event: any) {
+      const i = this.set.findIndex(x => this.compareTo(x.value, event.target.value, this.editBoxIgnorCase) )
       if (i >= 0)  {
         this.knobPoint = this.service.transformingByItemIndex(i)
-      } else {
-        this.invalidInput.emit()
+        this.value = this.set[i]
       }
+    }
+
+    onInvalidValueEnter() {
+      this.invalidInput.emit()
     }
 
     @Input()
@@ -72,6 +75,8 @@ export class GnarlComponent implements OnInit {
 
     set value(value: object) {
         this.currentItem = value
+        this.currentIndex = value['key']
+        this.currentValue = value['value']
         this.valueChange.emit(value)
     }
 
@@ -89,12 +94,13 @@ export class GnarlComponent implements OnInit {
       this.service.setRadius(this.gnarlRadius)
       this.service.setNumberOfAcrs(this.set.length)
       this.currentIndex = this.value['key']
+      this.currentValue = this.value['value']
       this.knobPoint = this.service.transformingByItemIndex(this.currentIndex)
       this.service.onTransforming.subscribe( (i: number) => {
         this.value = this.set[i]
-        this.currentIndex = i
         // console.log('On transforming', i, this.currentIndex, this.set[i])
       })
+      this.validInputValues = _.map(this.set, (x) => x.value)
     }
 
     get width() {

@@ -42,7 +42,9 @@
 
     <ls-gnarl-input class="gnarl-editor"
         [editable]="editableInput"
-        [value]="currentItem?.value"
-        (change)="onChange($event)">
+        [(inputValue)]="currentValue"
+        (inputValueEnter)="onValueEnter($event)"
+        [validInputs]="validInputValues"
+        (invalidValueEnterd)="onInvalidValueEnter()">
     </ls-gnarl-input>
 </div>

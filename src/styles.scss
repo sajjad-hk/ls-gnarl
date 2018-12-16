@@ -8,6 +8,10 @@
             .input-txt-value:focus {
                 border-bottom: 1px solid white;
                 outline: none;
+                
+            }
+            .input-txt-value-invalid:focus {
+                border-bottom: 1px solid red;
             }
             .output-txt-value {
                 color: white;

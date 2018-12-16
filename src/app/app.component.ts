@@ -73,11 +73,11 @@ export class AppComponent {
     {key: 30, value:'9a'},]
 
     onInvalidInput() {
-      alert('Invalid Input')
+      console.log('%c WARN => Invalid Input value!', 'color: red; font-weight: bold;')
     }
 
     onValueChange() {
-      console.log(this.item2);
+      console.log('%c INFO => Input value changed to:', 'color: green; font-weight: bold;', this.item2)
     }
   
 }

@@ -1,14 +1,14 @@
-<input #box class="input-txt-value" 
+<input #box class="input-txt-value" [ngClass]="{'input-txt-value-invalid': invalid}"
         spellcheck="false"
         [hidden]="!editingMode" 
         *ngIf="editable"
         type="text"
-        value="{{value}}"
-        (blur)="update(box.value)"
-        (keyup.enter)="update(box.value)"/>
+        value="{{inputValue}}"
+        (blur)="onBlur($event)"
+        (keyup.enter)="onBlur($event)"/>
 
 <div class="output-txt-value" 
         *ngIf="!editingMode" 
         (click)="startEditing()"> 
-        <div>{{value}}</div>
+        <div>{{inputValue}}</div>
 </div>
