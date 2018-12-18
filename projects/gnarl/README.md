@@ -8,7 +8,7 @@ Use `npm install Gnarls --save` to install Gnarls in your angular project.
 
 ## Importing/Usage
 
-app.module.ts
+### app.module.ts
 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
@@ -33,7 +33,7 @@ export class AppModule { }
 
 ```
 
-app.component.ts
+### app.component.ts
 
 ```typescript
 import { Component } from '@angular/core';
@@ -76,20 +76,20 @@ export class AppComponent {
     {key: 25, value: 'Z'},
   ]
   onInvalidInput() {
-    console.log('Invalid Input')
-  }
+      console.log('%c WARN => Invalid Input value!', 'color: red; font-weight: bold;')
+    }
 
   onValueChange() {
-    console.log(this.item);
+      console.log('%c INFO => Input value changed to:', 'color: green; font-weight: bold;', this.item2)
   }
 }
 ```
 
-app.component.html
+### app.component.html
 
 ```html
 <ls-gnarl
-    [(value)] = "item"
+    [(value)] = "item2"
     (invalidInput) = "onInvalidInput()"
     (valueChange) = "onValueChange()"
     [buttonPos] = "'V'"
@@ -97,8 +97,7 @@ app.component.html
     [gnarlStrokeWidth]="6"
     [knobStrokeWidth]="1"
     [opacity]="0.2"
-    [set]="set"
-    [knobColor]='knobColor'
+    [set]="set2"
     [editableInput]="true">
 
 <!-- Down arrow icon -->
@@ -123,6 +122,37 @@ app.component.html
 </ls-gnarl>
 ```
 
+### styles.scss
+
+```scss
+.gnarl-container {
+    ls-gnarl {
+        ls-gnarl-input {
+            .input-txt-value {
+                color: white;
+                font: Arial;
+            }
+            .input-txt-value:focus {
+                border-bottom: 1px solid white;
+                outline: none;
+
+            }
+            .input-txt-value-invalid:focus {
+                border-bottom: 1px solid red;
+            }
+            .output-txt-value {
+                color: white;
+                font: Arial;
+
+                text-shadow: 0px 4px 3px rgba(0,0,0,0.5),
+                0px 8px 13px rgba(0,0,0,0.1),
+                0px 18px 23px rgba(0,0,0,0.1);
+            }
+        }
+    }
+}
+```
+
 ## Attributes
 
 |  Attribute name  | Possible Value                                          | Description |
@@ -138,5 +168,13 @@ app.component.html
 | editableInput | a boolean value:  true | have editable Input in center of circle. |
 | invalidInput | a callback function : `()=>console.log('I am invalid')` | this callback make sense when you need to have editable input and take action in case of invalid input. |
 | valueChange | a callback function: `()=>console.log(item)` | This function would help if you need take action on value change. |
+
+## Styles
+
+| Class | Description |
+|------ | ------------|
+|input-txt-value | |
+|input-txt-value-invalid| |
+|output-txt-value | |
 
 ### Please share with me your suggestions ;)

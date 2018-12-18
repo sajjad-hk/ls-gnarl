@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { invalid } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'ngs-root',

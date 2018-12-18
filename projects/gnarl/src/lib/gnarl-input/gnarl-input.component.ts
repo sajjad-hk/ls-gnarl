@@ -6,6 +6,7 @@ import { Component,
             ViewEncapsulation, 
             ViewChild, 
             ElementRef  } from "@angular/core"
+import * as _ from 'lodash';
 
 @Component({
     selector: "ls-gnarl-input",
@@ -40,7 +41,7 @@ export class GnarlInputComponent implements OnInit {
 
     onBlur(event: any) {
         this.inputValueEnter.emit(event)
-        if (this.validInputs.includes(event.target.value)) {
+        if (_.includes(this.validInputs, event.target.value)) {
             this.invalid = false
             this.inputValue = event.target.value
             if (this.editable) {
